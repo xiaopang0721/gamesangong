@@ -14,11 +14,7 @@ module gamesangong.page {
 		static myinit(str: string) {
 			super.myinit(str);
 			SangongClip.init();
-			if (WebConfig.baseplatform == PageDef.BASE_PLATFORM_TYPE_NQP) {
-				PageDef._pageClassMap[SangongPageDef.PAGE_SG] = SangongPage;
-			} else {
-				PageDef._pageClassMap[SangongPageDef.PAGE_SG] = SangongPageOld;
-			}
+			PageDef._pageClassMap[SangongPageDef.PAGE_SG] = SangongPage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_MAP] = SangongMapPage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_RULE] = SangongRulePage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_LOSE] = SangongLosePage;
