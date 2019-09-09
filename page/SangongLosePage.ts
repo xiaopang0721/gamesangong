@@ -3,7 +3,7 @@
 */
 module gamesangong.page{
 	export class SangongLosePage extends game.gui.base.Page {
-		private _viewUI: ui.game_ui.sangong.JieSuan_2UI;
+		private _viewUI: ui.nqp.game_ui.sangong.JieSuan_2UI;
 		
 		constructor(v: Game, onOpenFunc?: Function, onCloseFunc?: Function) {
 			super(v, onOpenFunc, onCloseFunc);

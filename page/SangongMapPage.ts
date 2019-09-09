@@ -33,7 +33,7 @@ module gamesangong.page {
     }
 
     export class SangongMapPage extends game.gui.base.Page {
-        private _viewUI: ui.game_ui.sangong.SanGongUI;
+        private _viewUI: ui.nqp.game_ui.sangong.SanGongUI;
         private _mapInfo: SangongMapInfo;
         private _SangongMgr: SangongMgr;
         private _SangongStory: SangongStory;
