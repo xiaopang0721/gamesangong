@@ -21,6 +21,14 @@ module gamesangong.page {
 				PathGameTongyong.atlas_game_ui_tongyong + "hud.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "dating.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "logo.atlas",
+				Path_game_sangong.ui_sangong + "sk/sg_0.png",
+				Path_game_sangong.ui_sangong + "sk/sg_0.sk",
+				Path_game_sangong.ui_sangong + "sk/sg_1.png",
+				Path_game_sangong.ui_sangong + "sk/sg_1.sk",
+				Path_game_sangong.ui_sangong + "sk/sg_2.png",
+				Path_game_sangong.ui_sangong + "sk/sg_2.sk",
+				Path_game_sangong.ui_sangong + "sk/sg_3.png",
+				Path_game_sangong.ui_sangong + "sk/sg_3.sk",
 			];
 			this._isNeedDuang = false;
 		}
