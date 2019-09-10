@@ -64,6 +64,10 @@ module gamesangong.page {
                 Path_game_sangong.atlas_game_ui + "sangong/effect/yanhua.atlas",
                 PathGameTongyong.atlas_game_ui_tongyong + "general/effect/fapai_1.atlas",
                 PathGameTongyong.atlas_game_ui_tongyong + "general/effect/xipai.atlas",
+                Path_game_sangong.ui_sangong + "sk/sg_0.png",
+				Path_game_sangong.ui_sangong + "sk/sg_1.png",
+				Path_game_sangong.ui_sangong + "sk/sg_2.png",
+				Path_game_sangong.ui_sangong + "sk/sg_3.png",
             ];
         }
 
