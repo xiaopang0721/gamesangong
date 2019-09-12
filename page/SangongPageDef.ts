@@ -28,7 +28,7 @@ module gamesangong.page {
 				PathGameTongyong.atlas_game_ui_tongyong + "touxiang.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "pai.atlas",
 				Path_game_sangong.atlas_game_ui + "sangong/effect/yanhua.atlas",
-				PathGameTongyong.atlas_game_ui_tongyong + "general/effect/fapai_2.atlas",
+				PathGameTongyong.atlas_game_ui_tongyong + "general/effect/fapai_3.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "general/effect/xipai.atlas",
 				Path.custom_atlas_scene + 'card.atlas',
 				PathGameTongyong.atlas_game_ui_tongyong + "dating.atlas",
