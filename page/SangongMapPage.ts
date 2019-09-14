@@ -65,9 +65,9 @@ module gamesangong.page {
                 PathGameTongyong.atlas_game_ui_tongyong + "general/effect/fapai_1.atlas",
                 PathGameTongyong.atlas_game_ui_tongyong + "general/effect/xipai.atlas",
                 Path_game_sangong.ui_sangong + "sk/sg_0.png",
-				Path_game_sangong.ui_sangong + "sk/sg_1.png",
-				Path_game_sangong.ui_sangong + "sk/sg_2.png",
-				Path_game_sangong.ui_sangong + "sk/sg_3.png",
+                Path_game_sangong.ui_sangong + "sk/sg_1.png",
+                Path_game_sangong.ui_sangong + "sk/sg_2.png",
+                Path_game_sangong.ui_sangong + "sk/sg_3.png",
             ];
         }
 
@@ -89,6 +89,7 @@ module gamesangong.page {
         // 页面打开时执行函数
         protected onOpen(): void {
             super.onOpen();
+            this.initBeiClip();
             this.updateViewUI();
             this.onUpdateUnitOffline();
             if (!this._SangongMgr.isReLogin) {
@@ -127,6 +128,32 @@ module gamesangong.page {
 
             for (let i = 1; i < 6; i++) {
                 this._viewUI["btn_bet" + i] && this._viewUI["btn_bet" + i].on(LEvent.CLICK, this, this.onBet, [i]);
+            }
+        }
+
+        //倍数
+        private _beiClip1: ClipUtil;
+        private _beiClip2: ClipUtil;
+        private _beiClip3: ClipUtil;
+        private _beiClip4: ClipUtil;
+        private _beiClip5: ClipUtil;
+        initBeiClip(): void {
+            for (let i = 1; i < 6; i++) {
+                this["_beiClip" + i] = new ClipUtil(ClipUtil.BEI_FONT);
+                this["_beiClip" + i].centerX = this._viewUI["clip_bei" + i].centerX;
+                this["_beiClip" + i].centerY = this._viewUI["clip_bei" + i].centerY;
+                this._viewUI["clip_bei" + i].parent.addChild(this["_beiClip" + i]);
+                this._viewUI["clip_bei" + i].visible = false;
+            }
+        }
+
+        clearBeiClip(): void {
+            for (let i = 1; i < 6; i++) {
+                if (this["_beiClip" + i]) {
+                    this["_beiClip" + i].removeSelf();
+                    this["_beiClip" + i].destroy();
+                    this["_beiClip" + i] = null;
+                }
             }
         }
 
@@ -559,7 +586,8 @@ module gamesangong.page {
                 }
                 for (let i = 0; i < this._betPerTemp.length; i++) {
                     let index = i + 1;
-                    this._viewUI["btn_bet" + index].label = this._betPerTemp[i] + "倍";
+                    // this._viewUI["btn_bet" + index].label = this._betPerTemp[i] + "倍";
+                    this["_beiClip" + index].setText(this._betPerTemp[i], true);
                 }
                 for (let k = this._betPerTemp.length + 1; k < 6; k++) {
                     this._viewUI["btn_bet" + k].visible = false;
@@ -1018,6 +1046,7 @@ module gamesangong.page {
                 this._mapInfo = null;
                 this._game.stopMusic();
                 this._game.stopAllSound();
+                this.clearBeiClip();
             }
 
             super.close();
