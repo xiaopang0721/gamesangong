@@ -33,7 +33,7 @@ module gamesangong.page {
     }
 
     export class SangongMapPage extends game.gui.base.Page {
-        private _viewUI: ui.game_ui.sangong.SanGongUI;
+        private _viewUI: ui.nqp.game_ui.sangong.SanGongUI;
         private _mapInfo: SangongMapInfo;
         private _SangongMgr: SangongMgr;
         private _SangongStory: SangongStory;
@@ -55,6 +55,7 @@ module gamesangong.page {
             this._isNeedDuang = false;
             this._asset = [
                 PathGameTongyong.atlas_game_ui_tongyong + "hud.atlas",
+                PathGameTongyong.atlas_game_ui_tongyong + "dating.atlas",
                 Path_game_sangong.atlas_game_ui + "sangong.atlas",
                 PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
                 PathGameTongyong.atlas_game_ui_tongyong + "touxiang.atlas",
@@ -63,6 +64,10 @@ module gamesangong.page {
                 Path_game_sangong.atlas_game_ui + "sangong/effect/yanhua.atlas",
                 PathGameTongyong.atlas_game_ui_tongyong + "general/effect/fapai_1.atlas",
                 PathGameTongyong.atlas_game_ui_tongyong + "general/effect/xipai.atlas",
+                Path_game_sangong.ui_sangong + "sk/sg_0.png",
+                Path_game_sangong.ui_sangong + "sk/sg_1.png",
+                Path_game_sangong.ui_sangong + "sk/sg_2.png",
+                Path_game_sangong.ui_sangong + "sk/sg_3.png",
             ];
         }
 
@@ -79,11 +84,13 @@ module gamesangong.page {
                 this._SangongMgr.on(SangongMgr.DEAL_CARDS, this, this.onAfterDealCards);
             }
             this._game.playMusic(Path_game_sangong.music_sangong + MUSIC_PATH.bgMusic);
+            this._viewUI.btn_menu.left = this._game.isFullScreen ? 25 : 10;
         }
 
         // 页面打开时执行函数
         protected onOpen(): void {
             super.onOpen();
+            this.initBeiClip();
             this.updateViewUI();
             this.onUpdateUnitOffline();
             if (!this._SangongMgr.isReLogin) {
@@ -125,6 +132,42 @@ module gamesangong.page {
             }
         }
 
+        private _curDiffTime: number;
+        update(diff: number) {
+            if (!this._curDiffTime || this._curDiffTime < 0) {
+                this._viewUI.btn_chongzhi.ani1.play(0, false);
+                this._curDiffTime = TongyongPageDef.CZ_PLAY_DIFF_TIME;
+            } else {
+                this._curDiffTime -= diff;
+            }
+        }
+
+        //倍数
+        private _beiClip1: ClipUtil;
+        private _beiClip2: ClipUtil;
+        private _beiClip3: ClipUtil;
+        private _beiClip4: ClipUtil;
+        private _beiClip5: ClipUtil;
+        initBeiClip(): void {
+            for (let i = 1; i < 6; i++) {
+                this["_beiClip" + i] = new ClipUtil(ClipUtil.BEI_FONT);
+                this["_beiClip" + i].centerX = this._viewUI["clip_bei" + i].centerX;
+                this["_beiClip" + i].centerY = this._viewUI["clip_bei" + i].centerY;
+                this._viewUI["clip_bei" + i].parent.addChild(this["_beiClip" + i]);
+                this._viewUI["clip_bei" + i].visible = false;
+            }
+        }
+
+        clearBeiClip(): void {
+            for (let i = 1; i < 6; i++) {
+                if (this["_beiClip" + i]) {
+                    this["_beiClip" + i].removeSelf();
+                    this["_beiClip" + i].destroy();
+                    this["_beiClip" + i] = null;
+                }
+            }
+        }
+
         //打开时要处理的东西
         private updateViewUI(): void {
             this._viewUI.img_menu.visible = false;
@@ -143,8 +186,7 @@ module gamesangong.page {
             this._viewUI.img_time.ani1.stop();
             this._viewUI.view_xipai.visible = false;
             this._viewUI.view_xipai.ani_xipai.stop();
-            this._viewUI.view_fapai.visible = false;
-            this._viewUI.view_fapai.ani1.stop();
+            this._viewUI.view_paixie.ani2.gotoAndStop(0);
             for (let i = 0; i < 5; i++) {
                 this._viewUI["view_head" + i].visible = false;
                 this._viewUI["view_banker" + i].visible = false;
@@ -475,8 +517,7 @@ module gamesangong.page {
                 this._viewUI.view_xipai.ani_xipai.stop();
             }
             if (state == MAP_STATUS.MAP_STATE_DEAL) {
-                this._viewUI.view_fapai.visible = true;
-                this._viewUI.view_fapai.ani1.play(1, true);
+                this._viewUI.view_paixie.ani2.play(1, true);
             }
             if (state == MAP_STATUS.MAP_STATE_BANKER) {
                 this._viewUI.box_banker.visible = true;
@@ -496,8 +537,7 @@ module gamesangong.page {
                 this.randBanker();
             }
             if (state >= MAP_STATUS.MAP_STATE_BANKER) {
-                this._viewUI.view_fapai.visible = false;
-                this._viewUI.view_fapai.ani1.stop();
+                this._viewUI.view_paixie.ani2.gotoAndStop(0);
             }
             if (state >= MAP_STATUS.MAP_STATE_BET) {
                 this._viewUI.img_qiang.visible = false;
@@ -554,7 +594,8 @@ module gamesangong.page {
                 }
                 for (let i = 0; i < this._betPerTemp.length; i++) {
                     let index = i + 1;
-                    this._viewUI["btn_bet" + index].label = this._betPerTemp[i] + "倍";
+                    // this._viewUI["btn_bet" + index].label = this._betPerTemp[i] + "倍";
+                    this["_beiClip" + index].setText(this._betPerTemp[i], true);
                 }
                 for (let k = this._betPerTemp.length + 1; k < 6; k++) {
                     this._viewUI["btn_bet" + k].visible = false;
@@ -615,8 +656,7 @@ module gamesangong.page {
 
         //发完牌了
         private onAfterDealCards(): void {
-            this._viewUI.view_fapai.visible = false;
-            this._viewUI.view_fapai.ani1.stop();
+            this._viewUI.view_paixie.ani2.gotoAndStop(0);
         }
 
         //更新倒计时时间戳
@@ -933,7 +973,7 @@ module gamesangong.page {
                 TongyongPageDef.ins.alertRecharge(StringU.substitute("老板，您的金币少于{0}哦~\n补充点金币去大杀四方吧~", ChipConfig[this._SangongStory.mapLv][1]), () => {
                     this._game.uiRoot.general.open(DatingPageDef.PAGE_CHONGZHI);
                 }, () => {
-                }, false, PathGameTongyong.ui_tongyong_general + "btn_cz.png");
+                }, true, TongyongPageDef.TIPS_SKIN_STR["cz"]);
             }
         }
 
@@ -1013,6 +1053,7 @@ module gamesangong.page {
                 this._mapInfo = null;
                 this._game.stopMusic();
                 this._game.stopAllSound();
+                this.clearBeiClip();
             }
 
             super.close();

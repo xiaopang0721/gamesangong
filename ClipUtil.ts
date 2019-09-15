@@ -9,8 +9,16 @@ module gamesangong {
         public static ADD_MONEY_FONT: any;
         //扣钱飘字
         public static SUB_MONEY_FONT: any;
-        //HUD数字
-        public static HUD_FONT: any;
+        //底分数字初级
+        public static HUD_FONT0: any;
+        //底分数字小资
+        public static HUD_FONT1: any;
+        //底分数字老板
+        public static HUD_FONT2: any;
+        //底分数字富豪
+        public static HUD_FONT3: any;
+        //倍数文字
+        public static BEI_FONT: any;
 
         static init(): void {
             this.MONEY_FONT2 = {
@@ -21,10 +29,10 @@ module gamesangong {
                 clipX: 11,
                 space: 0
             };
-            
+
             //加钱飘字
             this.ADD_MONEY_FONT = {
-                source: PathGameTongyong.atlas_game_ui_tongyong+ "general.atlas",
+                source: PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
                 url: PathGameTongyong.ui_tongyong_general + 'clip_num1.png',
                 clipWidth: 25,
                 clipHeight: 32,
@@ -34,22 +42,62 @@ module gamesangong {
 
             //扣钱飘字
             this.SUB_MONEY_FONT = {
-                source: PathGameTongyong.atlas_game_ui_tongyong+ "general.atlas",
+                source: PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
                 url: PathGameTongyong.ui_tongyong_general + 'clip_num.png',
                 clipWidth: 25,
                 clipHeight: 32,
                 clipX: 11,
                 space: -8
             };
-            
-            //HUD数字
-            this.HUD_FONT = {
-                source: PathGameTongyong.atlas_game_ui_tongyong+ "general.atlas",
-                url: PathGameTongyong.ui_tongyong_dating + 'clip_dizhu.png',
+
+            //底分数字初级
+            this.HUD_FONT0 = {
+                source: PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
+                url: PathGameTongyong.ui_tongyong_dating + 'clip_dizhu0.png',
                 clipWidth: 22,
                 clipHeight: 27,
                 clipX: 10,
                 space: -5
+            };
+
+            //底分数字小资
+            this.HUD_FONT1 = {
+                source: PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
+                url: PathGameTongyong.ui_tongyong_dating + 'clip_dizhu1.png',
+                clipWidth: 22,
+                clipHeight: 27,
+                clipX: 10,
+                space: -5
+            };
+
+            //底分数字老板
+            this.HUD_FONT2 = {
+                source: PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
+                url: PathGameTongyong.ui_tongyong_dating + 'clip_dizhu2.png',
+                clipWidth: 22,
+                clipHeight: 27,
+                clipX: 10,
+                space: -5
+            };
+
+            //底分数字富豪
+            this.HUD_FONT3 = {
+                source: PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
+                url: PathGameTongyong.ui_tongyong_dating + 'clip_dizhu3.png',
+                clipWidth: 22,
+                clipHeight: 27,
+                clipX: 10,
+                space: -5
+            };
+
+            //倍数
+            this.BEI_FONT = {
+                source: PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
+                url: PathGameTongyong.ui_tongyong_general + 'clip_bs.png',
+                clipWidth: 32,
+                clipHeight: 41,
+                clipX: 10,
+                space: -18
             };
         }
         private _clip: ClipCell;
@@ -172,7 +220,7 @@ module gamesangong {
         private _preSkin: string = null;
         private _postSkin: string = null;
         public setText(str: any, needZero: boolean = false, isTween: boolean = false, preSkin: string = null, postSkin: string = null): void {
-            if (this._num == str && this._needZero == needZero && this._isTween == isTween && this._preSkin == preSkin && this._postSkin == postSkin)  {
+            if (this._num == str && this._needZero == needZero && this._isTween == isTween && this._preSkin == preSkin && this._postSkin == postSkin) {
                 return;
             }
             this._num = str;

@@ -14,11 +14,7 @@ module gamesangong.page {
 		static myinit(str: string) {
 			super.myinit(str);
 			SangongClip.init();
-			if (WebConfig.baseplatform == PageDef.BASE_PLATFORM_TYPE_NQP) {
-				PageDef._pageClassMap[SangongPageDef.PAGE_SG] = SangongPage;
-			} else {
-				PageDef._pageClassMap[SangongPageDef.PAGE_SG] = SangongPageOld;
-			}
+			PageDef._pageClassMap[SangongPageDef.PAGE_SG] = SangongPage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_MAP] = SangongMapPage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_RULE] = SangongRulePage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_LOSE] = SangongLosePage;
@@ -32,7 +28,7 @@ module gamesangong.page {
 				PathGameTongyong.atlas_game_ui_tongyong + "touxiang.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "pai.atlas",
 				Path_game_sangong.atlas_game_ui + "sangong/effect/yanhua.atlas",
-				PathGameTongyong.atlas_game_ui_tongyong + "general/effect/fapai_2.atlas",
+				PathGameTongyong.atlas_game_ui_tongyong + "general/effect/fapai_3.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "general/effect/xipai.atlas",
 				Path.custom_atlas_scene + 'card.atlas',
 				PathGameTongyong.atlas_game_ui_tongyong + "dating.atlas",
@@ -41,6 +37,14 @@ module gamesangong.page {
 				PathGameTongyong.ui_tongyong_sk + "HeGuan.sk",
 				PathGameTongyong.ui_tongyong_sk + "HeGuan.png",
 
+				Path_game_sangong.ui_sangong + "sk/sg_0.png",
+				Path_game_sangong.ui_sangong + "sk/sg_0.sk",
+				Path_game_sangong.ui_sangong + "sk/sg_1.png",
+				Path_game_sangong.ui_sangong + "sk/sg_1.sk",
+				Path_game_sangong.ui_sangong + "sk/sg_2.png",
+				Path_game_sangong.ui_sangong + "sk/sg_2.sk",
+				Path_game_sangong.ui_sangong + "sk/sg_3.png",
+				Path_game_sangong.ui_sangong + "sk/sg_3.sk",
 
 				Path.map + 'pz_sangong.png',
 				Path.map_far + 'bg_sangong.jpg'
