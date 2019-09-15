@@ -185,8 +185,7 @@ module gamesangong.page {
             this._viewUI.img_time.ani1.stop();
             this._viewUI.view_xipai.visible = false;
             this._viewUI.view_xipai.ani_xipai.stop();
-            this._viewUI.view_fapai.visible = false;
-            this._viewUI.view_fapai.ani1.stop();
+            this._viewUI.view_paixie.ani2.gotoAndStop(0);
             for (let i = 0; i < 5; i++) {
                 this._viewUI["view_head" + i].visible = false;
                 this._viewUI["view_banker" + i].visible = false;
@@ -517,8 +516,7 @@ module gamesangong.page {
                 this._viewUI.view_xipai.ani_xipai.stop();
             }
             if (state == MAP_STATUS.MAP_STATE_DEAL) {
-                this._viewUI.view_fapai.visible = true;
-                this._viewUI.view_fapai.ani1.play(1, true);
+                this._viewUI.view_paixie.ani2.play(1, true);
             }
             if (state == MAP_STATUS.MAP_STATE_BANKER) {
                 this._viewUI.box_banker.visible = true;
@@ -538,8 +536,7 @@ module gamesangong.page {
                 this.randBanker();
             }
             if (state >= MAP_STATUS.MAP_STATE_BANKER) {
-                this._viewUI.view_fapai.visible = false;
-                this._viewUI.view_fapai.ani1.stop();
+                this._viewUI.view_paixie.ani2.gotoAndStop(0);
             }
             if (state >= MAP_STATUS.MAP_STATE_BET) {
                 this._viewUI.img_qiang.visible = false;
@@ -658,8 +655,7 @@ module gamesangong.page {
 
         //发完牌了
         private onAfterDealCards(): void {
-            this._viewUI.view_fapai.visible = false;
-            this._viewUI.view_fapai.ani1.stop();
+            this._viewUI.view_paixie.ani2.gotoAndStop(0);
         }
 
         //更新倒计时时间戳
