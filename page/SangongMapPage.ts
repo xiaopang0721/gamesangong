@@ -84,7 +84,8 @@ module gamesangong.page {
                 this._SangongMgr.on(SangongMgr.DEAL_CARDS, this, this.onAfterDealCards);
             }
             this._game.playMusic(Path_game_sangong.music_sangong + MUSIC_PATH.bgMusic);
-            this._viewUI.btn_menu.left = this._game.isFullScreen ? 25 : 10;
+            this._viewUI.btn_menu.left = this._game.isFullScreen ? 30 : 10;
+            this._viewUI.img_menu.left = this._game.isFullScreen ? 25 : 10;
         }
 
         // 页面打开时执行函数
