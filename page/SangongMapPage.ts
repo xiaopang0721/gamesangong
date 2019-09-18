@@ -1006,7 +1006,6 @@ module gamesangong.page {
             this._game.sceneObjectMgr.off(SceneObjectMgr.EVENT_UNIT_ACTION, this, this.onUpdateUnit);
             this._game.sceneObjectMgr.off(SceneObjectMgr.EVENT_MAPINFO_CHANGE, this, this.onUpdateMapInfo);
             this._game.sceneObjectMgr.off(SceneObjectMgr.EVENT_UNIT_QIFU_TIME_CHANGE, this, this.onUpdateUnit);
-            this._game.qifuMgr.off(QiFuMgr.QIFU_FLY, this, this.qifuFly);
             this._viewUI.view_xipai.ani_xipai.off(LEvent.COMPLETE, this, this.afterXiPai);
             Laya.timer.clearAll(this);
             Laya.Tween.clearAll(this);
