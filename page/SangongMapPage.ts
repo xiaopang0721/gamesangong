@@ -24,6 +24,7 @@ module gamesangong.page {
         "2": [265, 440],       //2个下注档次
         "3": [170, 345, 520],       //3个下注档次
         "4": [90, 265, 440, 615],      //4个下注档次
+        "5": [0, 175, 350, 525, 700],      //5个下注档次
     };
     const MONEY_NUM = 40; // 特效金币数量
     const MONEY_FLY_TIME = 30; // 金币飞行时间间隔
@@ -646,7 +647,10 @@ module gamesangong.page {
                         this._viewUI["btn_bet" + i].left = posConfig[i - 1];
                     }
                     break;
-                default:
+                case 5:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
                     break;
             }
         }
