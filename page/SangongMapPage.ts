@@ -540,7 +540,7 @@ module gamesangong.page {
                         }
                     }
                 }
-                Laya.timer.loop(100, this, this.randBanker);
+                Laya.timer.loop(this._diff_ran, this, this.randBanker);
                 this.randBanker();
             }
             if (state >= MAP_STATUS.MAP_STATE_BANKER) {
@@ -653,6 +653,7 @@ module gamesangong.page {
 
         //随一个庄家
         private _randCount: number = 0;
+        private _diff_ran: number = 200;
         private randBanker(): void {
             let idx = this._bankerTemp[this._randCount % this._bankerTemp.length];
             let posIdx = (idx - this._mainIdx + 5) % 5;
@@ -663,8 +664,7 @@ module gamesangong.page {
                     this._viewUI["view_banker" + i].visible = false;
                 }
             }
-            this._randCount++;
-            if (this._randCount >= 11) {
+            if (this._randCount >= 2000) {
                 for (let i = 1; i < 6; i++) {
                     let unit = this._game.sceneObjectMgr.getUnitByIdx(i)
                     let index = (i - this._mainIdx + 5) % 5
@@ -679,6 +679,7 @@ module gamesangong.page {
                 }
                 Laya.timer.clear(this, this.randBanker);
             }
+            this._randCount += this._diff_ran;
             if (this._bankerTemp.length > 1) {
                 this._game.playSound(Path_game_sangong.music_sangong + MUSIC_PATH.randBankerMusic, false);
             }
