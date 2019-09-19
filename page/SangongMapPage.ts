@@ -20,6 +20,11 @@ module gamesangong.page {
         "93": [20, 500],      //中级
         "94": [100, 1000],     //高级
     };
+    const betBtnPos: any = {
+        "2": [265, 440],       //2个下注档次
+        "3": [170, 345, 520],       //3个下注档次
+        "4": [90, 265, 440, 615],      //4个下注档次
+    };
     const MONEY_NUM = 40; // 特效金币数量
     const MONEY_FLY_TIME = 30; // 金币飞行时间间隔
     //音效url
@@ -596,7 +601,7 @@ module gamesangong.page {
                 }
                 for (let i = 0; i < this._betPerTemp.length; i++) {
                     let index = i + 1;
-                    // this._viewUI["btn_bet" + index].label = this._betPerTemp[i] + "倍";
+                    this.resetBetBtnPos(this._betPerTemp.length);
                     this["_beiClip" + index].setText(this._betPerTemp[i], true);
                 }
                 for (let k = this._betPerTemp.length + 1; k < 6; k++) {
@@ -621,6 +626,29 @@ module gamesangong.page {
 
             this._pageHandle.updatePageHandle();//更新额外界面的开关状态
             this._pageHandle.reset();//清空额外界面存储数组
+        }
+
+        private resetBetBtnPos(num: number): void {
+            let posConfig = betBtnPos[num.toString()];
+            switch (num) {
+                case 2:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
+                    break;
+                case 3:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
+                    break;
+                case 4:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         //随一个庄家
@@ -672,7 +700,7 @@ module gamesangong.page {
         deltaUpdate(): void {
             if (!(this._game.sceneObjectMgr.mapInfo instanceof SangongMapInfo)) return;
             if (!this._viewUI) return;
-            if (this._curStatus != MAP_STATUS.MAP_STATE_BANKER && this._curStatus != MAP_STATUS.MAP_STATE_BET) {
+            if (this._curStatus != MAP_STATUS.MAP_STATE_BANKER && this._curStatus != MAP_STATUS.MAP_STATE_BET && this._curStatus != MAP_STATUS.MAP_STATE_SHOW_CARDS) {
                 this._viewUI.img_time.visible = false;
                 this._viewUI.img_time.ani1.gotoAndStop(24);
                 return;
