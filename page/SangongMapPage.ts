@@ -668,7 +668,7 @@ module gamesangong.page {
                     this._viewUI["view_banker" + i].visible = false;
                 }
             }
-            if (this._randCount >= 2000) {
+            if (this._randCount >= 10) {
                 for (let i = 1; i < 6; i++) {
                     let unit = this._game.sceneObjectMgr.getUnitByIdx(i)
                     let index = (i - this._mainIdx + 5) % 5
@@ -683,7 +683,7 @@ module gamesangong.page {
                 }
                 Laya.timer.clear(this, this.randBanker);
             }
-            this._randCount += this._diff_ran;
+            this._randCount++;
             if (this._bankerTemp.length > 1) {
                 this._game.playSound(Path_game_sangong.music_sangong + MUSIC_PATH.randBankerMusic, false);
             }
