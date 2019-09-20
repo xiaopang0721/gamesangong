@@ -20,6 +20,12 @@ module gamesangong.page {
         "93": [20, 500],      //中级
         "94": [100, 1000],     //高级
     };
+    const betBtnPos: any = {
+        "2": [265, 440],       //2个下注档次
+        "3": [170, 345, 520],       //3个下注档次
+        "4": [90, 265, 440, 615],      //4个下注档次
+        "5": [0, 175, 350, 525, 700],      //5个下注档次
+    };
     const MONEY_NUM = 40; // 特效金币数量
     const MONEY_FLY_TIME = 30; // 金币飞行时间间隔
     //音效url
@@ -528,7 +534,7 @@ module gamesangong.page {
                         }
                     }
                 }
-                Laya.timer.loop(100, this, this.randBanker);
+                Laya.timer.loop(this._diff_ran, this, this.randBanker);
                 this.randBanker();
             }
             if (state >= MAP_STATUS.MAP_STATE_BANKER) {
@@ -589,7 +595,7 @@ module gamesangong.page {
                 }
                 for (let i = 0; i < this._betPerTemp.length; i++) {
                     let index = i + 1;
-                    // this._viewUI["btn_bet" + index].label = this._betPerTemp[i] + "倍";
+                    this.resetBetBtnPos(this._betPerTemp.length);
                     this["_beiClip" + index].setText(this._betPerTemp[i], true);
                 }
                 for (let k = this._betPerTemp.length + 1; k < 6; k++) {
@@ -616,8 +622,35 @@ module gamesangong.page {
             this._pageHandle.reset();//清空额外界面存储数组
         }
 
+        private resetBetBtnPos(num: number): void {
+            let posConfig = betBtnPos[num.toString()];
+            switch (num) {
+                case 2:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
+                    break;
+                case 3:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
+                    break;
+                case 4:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
+                    break;
+                case 5:
+                    for (let i = 1; i < num + 1; i++) {
+                        this._viewUI["btn_bet" + i].left = posConfig[i - 1];
+                    }
+                    break;
+            }
+        }
+
         //随一个庄家
         private _randCount: number = 0;
+        private _diff_ran: number = 200;
         private randBanker(): void {
             let idx = this._bankerTemp[this._randCount % this._bankerTemp.length];
             let posIdx = (idx - this._mainIdx + 5) % 5;
@@ -628,8 +661,7 @@ module gamesangong.page {
                     this._viewUI["view_banker" + i].visible = false;
                 }
             }
-            this._randCount++;
-            if (this._randCount >= 11) {
+            if (this._randCount >= 10) {
                 for (let i = 1; i < 6; i++) {
                     let unit = this._game.sceneObjectMgr.getUnitByIdx(i)
                     let index = (i - this._mainIdx + 5) % 5
@@ -644,6 +676,7 @@ module gamesangong.page {
                 }
                 Laya.timer.clear(this, this.randBanker);
             }
+            this._randCount++;
             if (this._bankerTemp.length > 1) {
                 this._game.playSound(Path_game_sangong.music_sangong + MUSIC_PATH.randBankerMusic, false);
             }
@@ -665,7 +698,7 @@ module gamesangong.page {
         deltaUpdate(): void {
             if (!(this._game.sceneObjectMgr.mapInfo instanceof SangongMapInfo)) return;
             if (!this._viewUI) return;
-            if (this._curStatus != MAP_STATUS.MAP_STATE_BANKER && this._curStatus != MAP_STATUS.MAP_STATE_BET) {
+            if (this._curStatus != MAP_STATUS.MAP_STATE_BANKER && this._curStatus != MAP_STATUS.MAP_STATE_BET && this._curStatus != MAP_STATUS.MAP_STATE_SHOW_CARDS) {
                 this._viewUI.img_time.visible = false;
                 this._viewUI.img_time.ani1.gotoAndStop(24);
                 return;
