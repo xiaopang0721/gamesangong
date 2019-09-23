@@ -197,8 +197,8 @@ module gamesangong.page {
             this._viewUI.view_paixie.ani2.gotoAndStop(0);
             for (let i = 0; i < 5; i++) {
                 this._viewUI["view_head" + i].visible = false;
-                this._viewUI["view_banker" + i].visible = false;
-                this._viewUI["view_banker" + i].ani1.gotoAndStop(10);
+                this._viewUI["view_head" + i].img_banker.visible = false;
+                this._viewUI["view_head" + i].img_banker.ani1.gotoAndStop(13);
                 if (i > 0) {
                     this._viewUI["view_player" + i].img_frame.visible = false;
                     this._viewUI["view_player" + i].box_betnum.visible = false;
@@ -311,7 +311,7 @@ module gamesangong.page {
         private onUnitRemove(u: Unit) {
             this.onUpdateUnit();
             let posIdx = (u.GetIndex() - this._mainIdx + 5) % 5;
-            this._viewUI["view_banker" + posIdx].visible = false;
+            this._viewUI["view_head" + posIdx].img_banker.visible = false;
         }
 
         //精灵显示
@@ -336,8 +336,8 @@ module gamesangong.page {
                         this._bankerIdx = posIdx;
                     }
                     let name = getMainPlayerName(unit.GetName());
-                    this._viewUI["view_head" + index].text_name.text = name;
-                    this._viewUI["view_head" + index].img_head.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + unit.GetHeadImg() + ".png";
+                    this._viewUI["view_head" + index].txt_name.text = name;
+                    this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + unit.GetHeadImg() + ".png";
                     if (this._curStatus != MAP_STATUS.MAP_STATE_SETTLE || this._SangongMgr.isReLogin) {
                         this.updateMoney();
                     }
@@ -358,13 +358,13 @@ module gamesangong.page {
                             Laya.timer.once(2500, this, () => {
                                 this._viewUI["view_head" + index].img_qifu.visible = true;
                                 if (this._viewUI["view_head" + index].img_qifu.visible && unit.GetQiFuType()) {
-                                    this._viewUI["view_head" + index].img_head.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[unit.GetQiFuType() - 1] + ".png";
+                                    this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[unit.GetQiFuType() - 1] + ".png";
                                 }
                             })
                         } else {
                             this._viewUI["view_head" + index].img_qifu.visible = true;
                             if (this._viewUI["view_head" + index].img_qifu.visible && unit.GetQiFuType()) {
-                                this._viewUI["view_head" + index].img_head.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[unit.GetQiFuType() - 1] + ".png";
+                                this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[unit.GetQiFuType() - 1] + ".png";
                             }
                         }
                     } else {
@@ -415,7 +415,7 @@ module gamesangong.page {
                 let unit = this._game.sceneObjectMgr.getUnitByIdx(posIdx);
                 if (unit) {
                     let money = EnumToString.getPointBackNum(unit.GetMoney(), 2);
-                    this._viewUI["view_head" + index].text_money.text = money;
+                    this._viewUI["view_head" + index].txt_money.text = money;
                 }
             }
         }
@@ -550,12 +550,11 @@ module gamesangong.page {
                     let unit = this._game.sceneObjectMgr.getUnitByIdx(unitIdx)
                     if (unit) {
                         if (unit.GetIdentity() != 1) {
-                            this._viewUI["view_banker" + i].visible = false;
+                            this._viewUI["view_head" + i].img_banker.visible = false;
                         } else {
-                            this._viewUI["view_banker" + i].visible = true;
+                            this._viewUI["view_head" + i].img_banker.visible = true;
                         }
                     }
-                    this._viewUI["view_banker" + i].ani1.stop();
                 }
             }
             if (state == MAP_STATUS.MAP_STATE_BET) {
@@ -564,8 +563,8 @@ module gamesangong.page {
                     let unit = this._game.sceneObjectMgr.getUnitByIdx(this._bankerTemp[i]);
                     let index = (this._bankerTemp[i] - mainUnit.GetIndex() + 5) % 5;
                     if (unit.GetIdentity() == 1) {
-                        this._viewUI["view_banker" + index].ani1.play(1, false);
                         this._bankerIdx = this._bankerTemp[i];
+                        this._viewUI["view_head" + i].img_banker.ani1.play(0, false);
                         this._game.playSound(Path_game_sangong.music_sangong + MUSIC_PATH.bankerMusic, false);
                         break;
                     }
@@ -656,9 +655,9 @@ module gamesangong.page {
             let posIdx = (idx - this._mainIdx + 5) % 5;
             for (let i = 0; i < 5; i++) {
                 if (i == posIdx) {
-                    this._viewUI["view_banker" + i].visible = true;
+                    this._viewUI["view_head" + i].img_banker.visible = true;
                 } else {
-                    this._viewUI["view_banker" + i].visible = false;
+                    this._viewUI["view_head" + i].img_banker.visible = false;
                 }
             }
             if (this._randCount >= 10) {
@@ -667,9 +666,9 @@ module gamesangong.page {
                     let index = (i - this._mainIdx + 5) % 5
                     if (unit) {
                         if (unit.GetIdentity() == 1) {
-                            this._viewUI["view_banker" + index].visible = true;
+                            this._viewUI["view_head" + i].img_banker.visible = true;
                         } else {
-                            this._viewUI["view_banker" + index].visible = false;
+                            this._viewUI["view_head" + i].img_banker.visible = false;
                         }
                     }
 
