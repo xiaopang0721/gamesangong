@@ -369,7 +369,7 @@ module gamesangong.page {
                         }
                     } else {
                         this._viewUI["view_head" + index].img_qifu.visible = false;
-                        this._viewUI["view_head" + index].img_head.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + unit.GetHeadImg() + ".png";
+                        this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + unit.GetHeadImg() + ".png";
                     }
                 }
             }
@@ -565,7 +565,7 @@ module gamesangong.page {
                     let index = (this._bankerTemp[i] - mainUnit.GetIndex() + 5) % 5;
                     if (unit.GetIdentity() == 1) {
                         this._bankerIdx = this._bankerTemp[i];
-                        this._viewUI["view_head" + i].img_banker.ani1.play(0, false);
+                        this._viewUI["view_head" + index].img_banker.ani1.play(0, false);
                         this._game.playSound(Path_game_sangong.music_sangong + MUSIC_PATH.bankerMusic, false);
                         break;
                     }
@@ -667,9 +667,9 @@ module gamesangong.page {
                     let index = (i - this._mainIdx + 5) % 5
                     if (unit) {
                         if (unit.GetIdentity() == 1) {
-                            this._viewUI["view_head" + i].img_banker.visible = true;
+                            this._viewUI["view_head" + index].img_banker.visible = true;
                         } else {
-                            this._viewUI["view_head" + i].img_banker.visible = false;
+                            this._viewUI["view_head" + index].img_banker.visible = false;
                         }
                     }
 
