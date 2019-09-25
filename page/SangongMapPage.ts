@@ -217,7 +217,7 @@ module gamesangong.page {
                     break;
                 case this._viewUI.btn_back:
                     let mapinfo: SangongMapInfo = this._game.sceneObjectMgr.mapInfo as SangongMapInfo;
-                    if (mapinfo && mapinfo.GetPlayState() == 1) {
+                    if (mapinfo && (mapinfo.GetPlayState() == 1 || mapinfo.GetMapState() <= MAP_STATUS.MAP_STATE_SETTLE)) {
                         this._game.showTips("游戏尚未结束，请先打完这局哦~");
                         return;
                     }
