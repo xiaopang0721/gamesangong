@@ -328,48 +328,41 @@ module gamesangong.page {
             let maxCount = 5;
             for (let index = 0; index < maxCount; index++) {
                 let posIdx = (idx + index) % maxCount == 0 ? 5 : (idx + index) % maxCount;
-                let unit = this._game.sceneObjectMgr.getUnitByIdx(posIdx)
-                this._viewUI["view_head" + index].visible = unit;
+                let unit = this._game.sceneObjectMgr.getUnitByIdx(posIdx);
+                let viewHead = this._viewUI["view_head" + index];
+                viewHead.visible = unit;
                 if (unit) {
                     //庄家存一下
                     if (unit.GetIdentity() == 1) {
                         this._bankerIdx = posIdx;
                     }
                     let name = getMainPlayerName(unit.GetName());
-                    this._viewUI["view_head" + index].txt_name.text = name;
-                    this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + unit.GetHeadImg() + ".png";
+                    viewHead.txt_name.text = name;
                     if (this._curStatus != MAP_STATUS.MAP_STATE_SETTLE || this._SangongMgr.isReLogin) {
                         this.updateMoney();
                     }
                     //头像框
-                    this._viewUI["view_head" + index].img_txk.visible = unit.GetVipLevel() > 0;
-                    if (this._viewUI["view_head" + index].img_txk.visible) {
-                        this._viewUI["view_head" + index].img_txk.skin = PathGameTongyong.ui_tongyong_touxiang + "tu_v" + unit.GetVipLevel() + ".png";
-                    }
+                    viewHead.img_txk.skin = TongyongUtil.getTouXiangKuangUrl(unit.GetHeadKuangImg(), 2);
                     //祈福成功 头像上就有动画
                     if (qifu_index && posIdx == qifu_index) {
-                        this._viewUI["view_head" + index].qifu_type.visible = true;
-                        this._viewUI["view_head" + index].qifu_type.skin = this._qifuTypeImgUrl;
-                        this.playTween(this._viewUI["view_head" + index].qifu_type, qifu_index);
+                        viewHead.qifu_type.visible = true;
+                        viewHead.qifu_type.skin = this._qifuTypeImgUrl;
+                        this.playTween(viewHead.qifu_type, qifu_index);
                     }
                     //时间戳变化 才加上祈福标志
-                    if (unit.GetQiFuEndTime() > this._game.sync.serverTimeBys) {
+                    if (TongyongUtil.getIsHaveQiFu(unit, this._game.sync.serverTimeBys)) {
                         if (qifu_index && posIdx == qifu_index) {
                             Laya.timer.once(2500, this, () => {
-                                this._viewUI["view_head" + index].img_qifu.visible = true;
-                                if (this._viewUI["view_head" + index].img_qifu.visible && unit.GetQiFuType()) {
-                                    this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[unit.GetQiFuType() - 1] + ".png";
-                                }
+                                viewHead.img_qifu.visible = true;
+                                viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg());
                             })
                         } else {
-                            this._viewUI["view_head" + index].img_qifu.visible = true;
-                            if (this._viewUI["view_head" + index].img_qifu.visible && unit.GetQiFuType()) {
-                                this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[unit.GetQiFuType() - 1] + ".png";
-                            }
+                            viewHead.img_qifu.visible = true;
+                            viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg());
                         }
                     } else {
-                        this._viewUI["view_head" + index].img_qifu.visible = false;
-                        this._viewUI["view_head" + index].img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + unit.GetHeadImg() + ".png";
+                        viewHead.img_qifu.visible = false;
+                        viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg());
                     }
                 }
             }
@@ -394,14 +387,13 @@ module gamesangong.page {
             this._firstList[index] = 1;
         }
 
-        private _nameStrInfo: string[] = ["xs", "px", "gsy", "gg", "cs", "tdg"];
         private _qifuTypeImgUrl: string;
         private qifuFly(dataSource: any): void {
             if (!dataSource) return;
             let dataInfo = dataSource;
             this._game.qifuMgr.showFlayAni(this._viewUI.view_head0, this._viewUI, dataSource, (dataInfo) => {
                 //相对应的玩家精灵做出反应
-                this._qifuTypeImgUrl = StringU.substitute(PathGameTongyong.ui_tongyong_touxiang + "f_{0}2.png", this._nameStrInfo[dataInfo.qf_id - 1]);
+                this._qifuTypeImgUrl = TongyongUtil.getQFTypeImg(dataInfo.qf_id);
                 this.onUpdateUnit(dataInfo.qifu_index);
             });
         }
@@ -458,29 +450,17 @@ module gamesangong.page {
                     if (!mPlayer.playerInfo) return;
                     money = mPlayer.playerInfo.money;
                     this._viewUI.view_head0.txt_name.text = getMainPlayerName(mPlayer.playerInfo.nickname);
-                    this._viewUI.view_head0.img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + mPlayer.playerInfo.headimg + ".png";
-                    this._viewUI.view_head0.img_qifu.visible = mPlayer.playerInfo.qifu_endtime > this._game.sync.serverTimeBys;
-                    if (this._viewUI.view_head0.img_qifu.visible && mPlayer.playerInfo.qifu_type) {
-                        this._viewUI.view_head0.img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[mPlayer.playerInfo.qifu_type - 1] + ".png";
-                    }
+                    this._viewUI.view_head0.img_icon.skin = TongyongUtil.getHeadUrl(mPlayer.playerInfo.headimg);
+                    this._viewUI.view_head0.img_qifu.visible = TongyongUtil.getIsHaveQiFu(mPlayer, this._game.sync.serverTimeBys);
                     //头像框
-                    this._viewUI.view_head0.img_txk.visible = mPlayer.playerInfo.vip_level > 0;
-                    if (this._viewUI.view_head0.img_txk.visible) {
-                        this._viewUI.view_head0.img_txk.skin = PathGameTongyong.ui_tongyong_touxiang + "tu_v" + mPlayer.playerInfo.vip_level + ".png";
-                    }
+                    this._viewUI.view_head0.img_txk.skin = TongyongUtil.getTouXiangKuangUrl(mPlayer.playerInfo.headKuang);
                 } else {
                     money = unitOffline.GetMoney();
                     this._viewUI.view_head0.txt_name.text = getMainPlayerName(unitOffline.GetName());
-                    this._viewUI.view_head0.img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + unitOffline.GetHeadImg() + ".png";
-                    this._viewUI.view_head0.img_qifu.visible = unitOffline.GetQiFuEndTime() > this._game.sync.serverTimeBys;
-                    if (this._viewUI.view_head0.img_qifu.visible && unitOffline.GetQiFuType()) {
-                        this._viewUI.view_head0.img_icon.skin = PathGameTongyong.ui_tongyong_touxiang + "head_" + this._nameStrInfo[unitOffline.GetQiFuType() - 1] + ".png";
-                    }
+                    this._viewUI.view_head0.img_icon.skin = TongyongUtil.getHeadUrl(unitOffline.GetHeadImg());
+                    this._viewUI.view_head0.img_qifu.visible = TongyongUtil.getIsHaveQiFu(unitOffline, this._game.sync.serverTimeBys);
                     //头像框
-                    this._viewUI.view_head0.img_txk.visible = unitOffline.GetVipLevel() > 0;
-                    if (this._viewUI.view_head0.img_txk.visible) {
-                        this._viewUI.view_head0.img_txk.skin = PathGameTongyong.ui_tongyong_touxiang + "tu_v" + unitOffline.GetVipLevel() + ".png";
-                    }
+                    this._viewUI.view_head0.img_txk.skin = TongyongUtil.getTouXiangKuangUrl(unitOffline.GetHeadKuangImg());
                 }
                 money = EnumToString.getPointBackNum(money, 2);
                 this._viewUI.view_head0.txt_money.text = money.toString();
