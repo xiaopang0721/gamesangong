@@ -33,7 +33,7 @@ module gamesangong.page {
 				Path.custom_atlas_scene + 'card.atlas',
 				PathGameTongyong.atlas_game_ui_tongyong + "dating.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "logo.atlas",
-				PathGameTongyong.atlas_game_ui_tongyong + "qifu.atlas",
+				DatingPath.atlas_dating_ui + "qifu.atlas",
 				PathGameTongyong.ui_tongyong_sk + "HeGuan.sk",
 				PathGameTongyong.ui_tongyong_sk + "HeGuan.png",
 
