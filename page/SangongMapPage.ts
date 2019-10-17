@@ -34,8 +34,8 @@ module gamesangong.page {
         cardTypeMusic: "sg_",
         randBankerMusic: "suijizhuangjia.mp3",
         bankerMusic: "dingzhuang.mp3",
-        loseMusic: "tongyong/lose",
-        winMusic: "tongyong/win",
+        loseMusic: "lose",
+        winMusic: "win",
     }
 
     export class SangongMapPage extends game.gui.base.Page {
