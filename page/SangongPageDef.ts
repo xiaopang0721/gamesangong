@@ -22,6 +22,7 @@ module gamesangong.page {
 
 
 			this["__needLoadAsset"] = [
+				DatingPath.atlas_dating_ui + "qifu.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "hud.atlas",
 				Path_game_sangong.atlas_game_ui + "sangong.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "general.atlas",
@@ -34,7 +35,7 @@ module gamesangong.page {
 				Path.custom_atlas_scene + 'card.atlas',
 				PathGameTongyong.atlas_game_ui_tongyong + "dating.atlas",
 				PathGameTongyong.atlas_game_ui_tongyong + "logo.atlas",
-				DatingPath.atlas_dating_ui + "qifu.atlas",
+				PathGameTongyong.atlas_game_ui_tongyong + "qifu.atlas",
 				PathGameTongyong.ui_tongyong_sk + "HeGuan.sk",
 				PathGameTongyong.ui_tongyong_sk + "HeGuan.png",
 
