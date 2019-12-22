@@ -2,19 +2,19 @@
 * name 
 */
 module gamesangong.page {
-	export class SangongWinPage extends game.gui.base.Page {
-		private _viewUI: ui.ajqp.game_ui.tongyong.effect.Effect_nylUI;
+	export class SangongBeginPage extends game.gui.base.Page {
+		private _viewUI: ui.ajqp.game_ui.tongyong.effect.Effect_kaishiyouxiUI;
 
 		constructor(v: Game, onOpenFunc?: Function, onCloseFunc?: Function) {
 			super(v, onOpenFunc, onCloseFunc);
 			this._asset = [
-				PathGameTongyong.atlas_game_ui_tongyong + "nyl.atlas",
+				PathGameTongyong.atlas_game_ui_tongyong + "ksyx.atlas",
 			];
 		}
 
 		// 页面初始化函数
 		protected init(): void {
-			this._viewUI = this.createView('game_ui.tongyong.effect.Effect_nylUI');
+			this._viewUI = this.createView('game_ui.tongyong.effect.Effect_kaishiyouxiUI');
 			this.addChild(this._viewUI);
 		}
 
@@ -26,16 +26,13 @@ module gamesangong.page {
 		}
 
 		private onPlayComplte(): void {
-			Laya.timer.once(1000, this, () => {
-				this.close();
-			})
+			this.close();
 		}
 
 		public close(): void {
 			if (this._viewUI) {
 				this._viewUI.ani1.off(LEvent.COMPLETE, this, this.onPlayComplte);
 			}
-			Laya.timer.clearAll(this);
 			super.close();
 		}
 	}

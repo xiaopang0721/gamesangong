@@ -10,7 +10,7 @@ module gamesangong.page {
 	}
 
 	export class SangongRulePage extends game.gui.base.Page {
-		private _viewUI: ui.nqp.game_ui.sangong.SanGong_GuiZeUI;
+		private _viewUI: ui.ajqp.game_ui.sangong.SanGong_GuiZeUI;
 
 		constructor(v: Game, onOpenFunc?: Function, onCloseFunc?: Function) {
 			super(v, onOpenFunc, onCloseFunc);
@@ -43,6 +43,10 @@ module gamesangong.page {
 			this._viewUI.panel_rule.vScrollBarSkin = "";
 			this._viewUI.panel_rule.vScrollBar.autoHide = true;
 			this._viewUI.panel_rule.vScrollBar.elasticDistance = 100;
+
+			this._viewUI.lab_daxiao.vScrollBarSkin = "";
+			this._viewUI.lab_daxiao.vScrollBar.autoHide = true;
+			this._viewUI.lab_daxiao.vScrollBar.elasticDistance = 100;
 		}
 
 		private selectHandler(index: number): void {

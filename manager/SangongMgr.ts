@@ -154,7 +154,7 @@ module gamesangong.manager {
 				for (let i = 0; i < this._cards.length / 3; i++) {
 					let card = this._cards[index + i * 3];
 					//播音效
-					Laya.timer.once(130 * count, this, () => {
+					Laya.timer.once(133 * count, this, () => {
 						this._game.playSound(PathGameTongyong.music_tongyong + "fapai.mp3", false);
 						card.fapai();
 						cardIndex++;
