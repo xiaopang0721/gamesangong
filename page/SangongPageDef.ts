@@ -8,14 +8,8 @@ module gamesangong.page {
 		static PAGE_SG: string = "1";
 		//三公游戏界面
 		static PAGE_SG_MAP: string = "2";
-		//三公胜利界面
-		static PAGE_SG_WIN: string = "3";
 		//三公开始游戏
-		static PAGE_SG_BEGIN: string = "4";
-		//三公庄家通杀
-		static PAGE_SG_TONGSHA: string = "5";
-		//三公庄家通赔
-		static PAGE_SG_TONGPEI: string = "6";
+		static PAGE_SG_BEGIN: string = "3";
 		//三公规则界面
 		static PAGE_SG_RULE: string = "101";
 
@@ -25,10 +19,7 @@ module gamesangong.page {
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG] = SangongPage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_MAP] = SangongMapPage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_RULE] = SangongRulePage;
-			PageDef._pageClassMap[SangongPageDef.PAGE_SG_WIN] = SangongWinPage;
 			PageDef._pageClassMap[SangongPageDef.PAGE_SG_BEGIN] = SangongBeginPage;
-			PageDef._pageClassMap[SangongPageDef.PAGE_SG_TONGSHA] = SangongTongShaPage;
-			PageDef._pageClassMap[SangongPageDef.PAGE_SG_TONGPEI] = SangongTongPeiPage;
 
 
 			this["__needLoadAsset"] = [

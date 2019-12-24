@@ -160,7 +160,7 @@ module gamesangong.page {
                 }
             }
         }
-        
+
         private _curDiffTime: number;
         update(diff: number) {
             super.update(diff);
@@ -215,6 +215,7 @@ module gamesangong.page {
             this._viewUI.img_time.visible = false;
             this._viewUI.img_time.ani1.stop();
             this._viewUI.view_xipai.visible = false;
+            this._viewUI.box_tips.visible = false;
             this._viewUI.view_xipai.ani_xipai.stop();
             this._viewUI.view_paixie.ani2.gotoAndStop(0);
             for (let i = 0; i < 5; i++) {
@@ -385,21 +386,20 @@ module gamesangong.page {
                         viewHead.qifu_type.skin = this._qifuTypeImgUrl;
                         this.playTween(viewHead.qifu_type, qifu_index);
                     }
-                    //时间戳变化 才加上祈福标志
-                    if (TongyongUtil.getIsHaveQiFu(unit, this._game.sync.serverTimeBys)) {
-                        if (qifu_index && posIdx == qifu_index) {
-                            Laya.timer.once(2500, this, () => {
-                                viewHead.img_qifu.visible = true;
-                                viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg());
-                            })
-                        }
-                        // else {
-                        //     viewHead.img_qifu.visible = true;
-                        //     viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg());
-                        // }
-                    } else {
-                        viewHead.img_qifu.visible = false;
-                        viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg());
+                    //祈福成功 头像上就有动画
+                    if (qifu_index && posIdx == qifu_index) {
+                        viewHead.qifu_type.visible = true;
+                        viewHead.qifu_type.skin = this._qifuTypeImgUrl;
+                        //时间戳变化 才加上祈福标志
+                        this.playTween(viewHead.qifu_type, qifu_index);
+                        Laya.timer.once(2500, this, () => {
+                            viewHead.img_qifu.visible = true;
+                            viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg(), 2);
+                        })
+                    }
+                    else {
+                        viewHead.img_qifu.visible = TongyongUtil.getIsHaveQiFu(unit, this._game.sync.serverTimeBys);
+                        viewHead.img_icon.skin = TongyongUtil.getHeadUrl(unit.GetHeadImg(), 2);
                     }
                 }
             }
@@ -531,8 +531,9 @@ module gamesangong.page {
                 str = "富豪场：底注：";
             }
             this._viewUI.text_roomtype.text = str + ChipConfig[this._SangongStory.mapLv][0];
+            this._viewUI.img_time.visible = false;
             if (state == MAP_STATUS.MAP_STATE_SHUFFLE) {
-                this._pageHandle.pushClose({ id: SangongPageDef.PAGE_SG_WIN, parent: this._game.uiRoot.HUD });
+                this._pageHandle.pushClose({ id: TongyongPageDef.PAGE_TONGYONG_GAMEWIN, parent: this._game.uiRoot.HUD });
                 this._viewUI.view_xipai.visible = true;
                 this._viewUI.view_xipai.ani_xipai.play(1, false);
             } else {
@@ -660,13 +661,13 @@ module gamesangong.page {
                 Laya.timer.once(2000, this, () => {
                     if (this._settleWinInfo.length < 1) {//庄家通杀
                         this._game.playSound(Path_game_sangong.music_sangong + "zjtongchi.mp3", false);
-                        this._game.uiRoot.HUD.open(SangongPageDef.PAGE_SG_TONGSHA);
+                        this._game.uiRoot.HUD.open(TongyongPageDef.PAGE_TONGYONG_ZJTS);
                     } else if (this._settleLoseInfo.length < 1) {//庄家通赔
                         // this._game.playSound(Path_game_sangong.music_sangong + "zjtongpei.mp3", false);
-                        this._game.uiRoot.HUD.open(SangongPageDef.PAGE_SG_TONGPEI);
+                        this._game.uiRoot.HUD.open(TongyongPageDef.PAGE_TONGYONG_ZJTP);
                     } else {
                         if (this._moneyChange >= 0) {
-                            this._game.uiRoot.general.open(SangongPageDef.PAGE_SG_WIN);
+                            this._game.uiRoot.general.open(TongyongPageDef.PAGE_TONGYONG_GAMEWIN);
                             let musicType = MathU.randomRange(1, 3);
                             this._game.playSound(PathGameTongyong.music_tongyong + MUSIC_PATH.winMusic + musicType + ".mp3", true);
                         } else {
@@ -680,7 +681,7 @@ module gamesangong.page {
                         if (this._moneyChange > 0) { //再播你赢了
                             let rand = MathU.randomRange(1, 3);
                             this._game.playSound(StringU.substitute(PathGameTongyong.music_tongyong + "win{0}.mp3", rand), true);
-                            this._game.uiRoot.HUD.open(SangongPageDef.PAGE_SG_WIN);
+                            this._game.uiRoot.HUD.open(TongyongPageDef.PAGE_TONGYONG_GAMEWIN);
                         } else { //再播你输了
                             let rand = MathU.randomRange(1, 4);
                             this._game.playSound(StringU.substitute(PathGameTongyong.music_tongyong + "lose{0}.mp3", rand), true);
@@ -771,11 +772,20 @@ module gamesangong.page {
             this._countDown = mapinfo.GetCountDown();
         }
 
+        private _noTimer: number[] = [
+            MAP_STATUS.MAP_STATE_NONE,
+            MAP_STATUS.MAP_STATE_SHUFFLE,
+            MAP_STATUS.MAP_STATE_DEAL,
+            MAP_STATUS.MAP_STATE_DEA_END,
+            MAP_STATUS.MAP_STATE_BANKER_PLAY,
+            MAP_STATUS.MAP_STATE_SETTLE,
+            MAP_STATUS.MAP_STATE_END,
+        ];
         //操作倒计时
         deltaUpdate(): void {
             if (!(this._game.sceneObjectMgr.mapInfo instanceof SangongMapInfo)) return;
             if (!this._viewUI) return;
-            if (this._curStatus != MAP_STATUS.MAP_STATE_BANKER && this._curStatus != MAP_STATUS.MAP_STATE_BET && this._curStatus != MAP_STATUS.MAP_STATE_SHOW_CARDS) {
+            if (this._noTimer.indexOf(this._curStatus) != -1) {
                 this._viewUI.img_time.visible = false;
                 this._viewUI.img_time.ani1.gotoAndStop(24);
                 return;
@@ -814,21 +824,11 @@ module gamesangong.page {
                             if (unit) {
                                 //玩家自己
                                 if (idx == mainIdx) {
-                                    this._viewUI.box_opt0.visible = true;
-                                    this._viewUI.box_opt0.box_bet.visible = false;
-                                    this._viewUI.box_opt0.box_qiang.visible = type == 1;
-                                    this._viewUI.box_opt0.box_buqiang.visible = !this._viewUI.box_opt0.box_qiang.visible;
-                                    this._viewUI.box_opt0.ani1.play(0, false);
                                     this._viewUI.box_banker.visible = false;
+                                    this.setBankerNum(this._viewUI.box_opt0, type == 1);
                                 } else {
                                     let posIdx = (idx - mainIdx + 5) % 5;
-                                    if (this._viewUI["box_opt" + posIdx]) {
-                                        this._viewUI["box_opt" + posIdx].visible = true;
-                                        this._viewUI["box_opt" + posIdx].box_bet.visible = false;
-                                        this._viewUI["box_opt" + posIdx].box_qiang.visible = type == 1;
-                                        this._viewUI["box_opt" + posIdx].box_buqiang.visible = !this._viewUI["box_opt" + posIdx].box_qiang.visible;
-                                        this._viewUI["box_opt" + posIdx].ani1.play(0, false);
-                                    }
+                                    this.setBankerNum(this._viewUI["box_opt" + posIdx], type == 1);
                                     if (this._viewUI["view_think" + posIdx]) {
                                         this._viewUI["view_think" + posIdx].visible = false;
                                         this._viewUI["view_think" + posIdx].ani1.stop();
@@ -939,6 +939,17 @@ module gamesangong.page {
                 }
             }
         }
+        private setBankerNum(view: any, isqiang: boolean): void {
+            view.visible = true;
+            view.box_bet.visible = false;
+            view.box_qiang.visible = isqiang;
+            view.box_buqiang.visible = !view.box_qiang.visible;
+            if (this._curStatus == MAP_STATUS.MAP_STATE_BANKER) {
+                view.ani1.play(0, false);
+            } else {
+                view.ani1.gotoAndStop(27);
+            }
+        }
 
         //设置下注倍数
         private _betClipList: any[] = [];
@@ -947,7 +958,6 @@ module gamesangong.page {
             view.box_bet.visible = true;
             view.box_qiang.visible = false;
             view.box_buqiang.visible = false;
-            view.ani1.play(0, false);
             let clip_money = new SangongClip(SangongClip.BET_CLIP_FONT);
             clip_money.setText(Math.abs(val), true);
             clip_money.scale(0.85, 0.85);
@@ -956,6 +966,11 @@ module gamesangong.page {
             view.bet_clip.parent.addChild(clip_money);
             this._clipList.push(clip_money);
             view.bet_clip.visible = false;
+            if (this._curStatus == MAP_STATUS.MAP_STATE_BET) {
+                view.ani1.play(0, false);
+            } else {
+                view.ani1.gotoAndStop(27);
+            }
         }
 
         //庄家赢钱
