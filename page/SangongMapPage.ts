@@ -661,42 +661,34 @@ module gamesangong.page {
                 this._viewUI.btn_show.visible = false;
             }
             if (state == MAP_STATUS.MAP_STATE_SETTLE) {
-                this.addBankerWinEff();
-                Laya.timer.once(1000, this, () => {
-                    this.addBankerLoseEff();
-                    this.addMoneyClip(this._bankerMoneyChange, this._bankerIdx);
-                    this.updateMoney();
-                });
-                Laya.timer.once(2000, this, () => {
-                    if (this._settleWinInfo.length < 1) {//庄家通杀
-                        this._game.playSound(Path_game_sangong.music_sangong + "zjtongchi.mp3", false);
-                        this._game.uiRoot.HUD.open(TongyongPageDef.PAGE_TONGYONG_ZJTS);
-                    } else if (this._settleLoseInfo.length < 1) {//庄家通赔
-                        // this._game.playSound(Path_game_sangong.music_sangong + "zjtongpei.mp3", false);
-                        this._game.uiRoot.HUD.open(TongyongPageDef.PAGE_TONGYONG_ZJTP);
-                    } else {
-                        if (this._moneyChange >= 0) {
-                            this._game.uiRoot.general.open(TongyongPageDef.PAGE_TONGYONG_GAMEWIN);
-                            let musicType = MathU.randomRange(1, 3);
-                            this._game.playSound(PathGameTongyong.music_tongyong + MUSIC_PATH.winMusic + musicType + ".mp3", true);
-                        } else {
-                            let musicType = MathU.randomRange(1, 4);
-                            this._game.playSound(PathGameTongyong.music_tongyong + MUSIC_PATH.loseMusic + musicType + ".mp3", true);
-                        }
-                    }
-                });
-                if (this._settleWinInfo.length < 1 || this._settleLoseInfo.length < 1) { //庄家通杀或通赔后
-                    Laya.timer.once(4000, this, () => {
-                        if (this._moneyChange > 0) { //再播你赢了
-                            let rand = MathU.randomRange(1, 3);
-                            this._game.playSound(StringU.substitute(PathGameTongyong.music_tongyong + "win{0}.mp3", rand), true);
-                            this._game.uiRoot.HUD.open(TongyongPageDef.PAGE_TONGYONG_GAMEWIN);
-                        } else { //再播你输了
-                            let rand = MathU.randomRange(1, 4);
-                            this._game.playSound(StringU.substitute(PathGameTongyong.music_tongyong + "lose{0}.mp3", rand), true);
-                        }
-                    });
+                let isTongSha = this._settleWinInfo.length < 1;
+                let isTongPei = this._settleLoseInfo.length < 1;
+                let time_delay = isTongPei || isTongSha ? 1000 : 0;//飘筹码延迟
+                let fly_delay = isTongSha || isTongPei ? 2700 : 1700;//飘字延迟
+                if (isTongSha) {//庄家通杀
+                    this._game.playSound(Path_game_sangong.music_sangong + "zjtongchi.mp3", false);
+                    this._pageHandle.pushOpen({ id: TongyongPageDef.PAGE_TONGYONG_ZJTS, parent: this._game.uiRoot.HUD });
+                } else if (isTongPei) {//庄家通赔
+                    // this._game.playSound(Path_game_sangong.music_sangong + "zjtongpei.mp3", false);Z
+                    this._pageHandle.pushOpen({ id: TongyongPageDef.PAGE_TONGYONG_ZJTP, parent: this._game.uiRoot.HUD });
                 }
+                //结算飘筹码
+                Laya.timer.once(time_delay, this, () => {
+                    this.showSettleEff();
+                });
+                //胜利动画
+                Laya.timer.once(fly_delay, this, () => {
+                    if (this._moneyChange >= 0) { //再播你赢了
+                        this._pageHandle.pushOpen({ id: TongyongPageDef.PAGE_TONGYONG_GAMEWIN, parent: this._game.uiRoot.HUD });
+                        let musicType = MathU.randomRange(1, 3);
+                        this._game.playSound(PathGameTongyong.music_tongyong + MUSIC_PATH.winMusic + musicType + ".mp3", true);
+                    } else { //再播你输了
+                        let musicType = MathU.randomRange(1, 4);
+                        this._game.playSound(PathGameTongyong.music_tongyong + MUSIC_PATH.loseMusic + musicType + ".mp3", true);
+                    }
+                    this._pageHandle.updatePageHandle();//更新额外界面的开关状态
+                    this._pageHandle.reset();//清空额外界面存储数组
+                });
             }
             if (state == MAP_STATUS.MAP_STATE_END) {
                 this._viewUI.btn_continue.visible = true;
@@ -1010,6 +1002,15 @@ module gamesangong.page {
             } else {
                 view.ani1.gotoAndStop(27);
             }
+        }
+
+        //结算表现
+        private showSettleEff(): void {
+            this.addBankerWinEff();
+            Laya.timer.once(1000, this, () => {
+                this.addBankerLoseEff();
+                this.addMoneyClip(this._bankerMoneyChange, this._bankerIdx);
+            });
         }
 
         //庄家赢钱
