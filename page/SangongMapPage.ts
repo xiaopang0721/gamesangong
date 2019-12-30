@@ -149,12 +149,12 @@ module gamesangong.page {
                 //全面屏
                 if (this._game.isFullScreen) {
                     this._viewUI.box_top_left.left = 14 + 56;
-                    this._viewUI.box_room_left.left = 105 + 56;
+                    this._viewUI.box_room_left.left = 115 + 56;
                     this._viewUI.box_top_right.right = 28 + 56;
                     this._viewUI.box_bottom_right.right = 12 + 56;
                 } else {
                     this._viewUI.box_top_left.left = 14;
-                    this._viewUI.box_room_left.left = 105;
+                    this._viewUI.box_room_left.left = 115;
                     this._viewUI.box_top_right.right = 28;
                     this._viewUI.box_bottom_right.right = 12;
                 }
@@ -451,7 +451,7 @@ module gamesangong.page {
                 let posIdx = (idx + index) % max == 0 ? 5 : (idx + index) % max;
                 let unit = this._game.sceneObjectMgr.getUnitByIdx(posIdx);
                 if (unit) {
-                    let money = EnumToString.getPointBackNum(unit.GetMoney(), 2);
+                    let money = EnumToString.getPointBackNum(TongyongUtil.getMoneyChange(unit.GetMoney()), 2);
                     this._viewUI["view_head" + index].txt_money.text = money;
                 }
             }
@@ -501,7 +501,7 @@ module gamesangong.page {
                     this._viewUI.view_head0.img_vip.visible = mPlayer.playerInfo.vip_level > 0;
                     this._viewUI.view_head0.img_vip.skin = TongyongUtil.getVipUrl(mPlayer.playerInfo.vip_level);
                 } else {
-                    money = unitOffline.GetMoney();
+                    money = TongyongUtil.getMoneyChange(unitOffline.GetMoney());
                     this._viewUI.view_head0.txt_name.text = getMainPlayerName(unitOffline.GetName());
                     this._viewUI.view_head0.img_icon.skin = TongyongUtil.getHeadUrl(unitOffline.GetHeadImg());
                     this._viewUI.view_head0.img_qifu.visible = TongyongUtil.getIsHaveQiFu(unitOffline, this._game.sync.serverTimeBys);
@@ -626,9 +626,9 @@ module gamesangong.page {
                 this._viewUI.txt_tips.text = mainUnit.GetIdentity() == 1 ? "请等待其他玩家下注" : "请选择下注倍数";
                 //下注按钮的倍数显示
                 let banker = this._game.sceneObjectMgr.getUnitByIdx(this._bankerIdx);
-                let bankerMoney = banker.GetMoney();
+                let bankerMoney = TongyongUtil.getMoneyChange(banker.GetMoney());
                 let bankePer = bankerMoney / (8 * ChipConfig[this._SangongStory.mapLv][0]);
-                let selfMoney = mainUnit.GetMoney();
+                let selfMoney = TongyongUtil.getMoneyChange(mainUnit.GetMoney());
                 let xianPer = selfMoney / (2 * ChipConfig[this._SangongStory.mapLv][0]);
                 let betPer = bankePer > xianPer ? xianPer : bankePer;
                 if (betPer > 35) {
