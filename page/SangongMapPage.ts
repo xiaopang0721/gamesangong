@@ -60,7 +60,6 @@ module gamesangong.page {
             super(v, onOpenFunc, onCloseFunc);
             this._isNeedDuang = false;
             this._asset = [
-                DatingPath.atlas_dating_ui + "qifu.atlas",
                 Path_game_sangong.atlas_game_ui + "sangong.atlas",
                 Path_game_sangong.atlas_game_ui_sangong_effect + "nyl.atlas",
                 Path_game_sangong.atlas_game_ui_sangong_effect + "qp.atlas",
@@ -753,6 +752,7 @@ module gamesangong.page {
                     }
 
                 }
+                this._kuang.removeSelf();
                 Laya.timer.clear(this, this.randBanker);
             }
             this._curIndex++;

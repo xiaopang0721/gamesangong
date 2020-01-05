@@ -23,7 +23,6 @@ module gamesangong.page {
 
 
 			this["__needLoadAsset"] = [
-				DatingPath.atlas_dating_ui + "qifu.atlas",
 				Path_game_sangong.atlas_game_ui + "sangong.atlas",
 				Path_game_sangong.atlas_game_ui_sangong_effect + "nyl.atlas",
 				Path_game_sangong.atlas_game_ui_sangong_effect + "qp.atlas",
